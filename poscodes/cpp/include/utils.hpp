@@ -2,6 +2,9 @@
 #define __UTILS_HPP__
 #include "poscode.hpp"
 #include <string>
+#pragma once
+#include <vector>
+void countingSortByPosition(std::vector<Poscode>& arr, int pos, int M);
 void quick_sort(Poscode *A, size_t n);
 void merge_sort(Poscode *A, size_t n);
 void radix_sort(Poscode *A, size_t n);
