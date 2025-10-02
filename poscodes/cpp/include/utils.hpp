@@ -8,5 +8,8 @@ void radix_sort(Poscode *A, size_t n);
 
 Poscode *readCodes(const std::string &strfile, size_t n);
 void deleteCodes(Poscode *codes);
+
+static inline bool less_poscode(Poscode& a, Poscode& b);
+static inline int char_to_bucket(char c, int M);
 #endif
 

@@ -39,3 +39,18 @@ void deleteCodes(Poscode *codes){
         delete[] codes;
     }    
 }
+
+static inline bool less_poscode(Poscode& a, Poscode& b){
+    return a.getData() < b.getData();
+}
+
+static inline int char_to_bucket(char c, int M){
+    if (M==10) {
+        if (c>='0' && c<='9') return c - '0';
+        return -1;
+    } else if (M == 26) {
+        if (c>='A' && c<='Z') return c - 'A';
+        return -1;
+    }
+    return -1;
+}
