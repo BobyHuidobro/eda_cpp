@@ -1,8 +1,11 @@
 #include "utils.hpp"
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <cstddef>
 #include "poscode.hpp"
 #include "queue.hpp"
+#include <iostream>
 
 
 void quick_sort(Poscode *A, size_t n){
@@ -57,23 +60,24 @@ static inline int char_to_bucket(char c, int M){
     return -1;
 }
 void countingSortByPosition(std::vector<Poscode>& arr, int pos, int M){
-    std::vector<eda::Queue<int>> buckets(M);
-    for(int i = 0; i < arr.size(); i++){
+    std::vector<eda::Queue> buckets(M);
+    for(int i = 0; i < arr.size() ; i++){
         char a = arr[i].getData()[pos];
         int bucket = char_to_bucket(a, M);
-        buckets[bucket].push(i);
+        if (bucket >= 0 && bucket < M) {  
+            buckets[bucket].push(i);
+        }
     };
     std::vector<Poscode> buffer;
     buffer.reserve(arr.size());
     for (int j = 0; j < M; j++){
-        while (!buckets[b].empty()){
-            int idx = buckets[j].top();
+        while (!buckets[j].isEmpty()){
+            int idx = buckets[j].top()->getData();
             buffer.push_back(arr[idx]);
             buckets[j].pop();
         }
     }
     for (int i = 0; i < arr.size(); i++) {
-    arr[i] = buffer[i];
+        arr[i] = buffer[i];
     }
-
-};
+}
