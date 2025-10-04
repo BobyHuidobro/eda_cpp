@@ -16,7 +16,21 @@ void merge_sort(Poscode *A, size_t n){
 
 }
 void radix_sort(Poscode *A, size_t n){
-
+    if (A == nullptr || n == 0) return;
+    std::vector<Poscode> V(n);
+    for (size_t i = 0; i < n; i++){
+        V[i] = A[i];
+    }
+    for (size_t pos = 5; pos >= 0; pos--) {
+        if (pos > 3) {
+            countingSortByPosition(V, pos, 26);
+        } else {
+            countingSortByPosition(V, pos, 10);
+        }
+    }
+    for (size_t i = 0; i < n; i++){
+        A[i] = V[i];
+    }
 }
 
 Poscode *readCodes(const std::string &strfile, size_t n){
