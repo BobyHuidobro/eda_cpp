@@ -9,19 +9,99 @@
 
 
 void quick_sort(Poscode *A, size_t n){
+    if (A == nullptr || n == 0) return;
+    if (!A || n == 0) return;
+    quick_sort_impl(A, 0, n - 1);
+}
 
+void quick_sort_impl(Poscode *A, int low, int high) {
+    while (low < high) {
+        int i = low;
+        int j = high;
+        Poscode pivot = A[low + (high - low) / 2];
+        
+        while (i <= j) {
+            while (less_poscode(A[i], pivot)) i++;
+            while (less_poscode(pivot, A[j])) j--;
+            if (i <= j) {
+                if (i != j) {
+                    std::swap(A[i], A[j]);
+                }
+                i++;
+                j--;
+            }
+        }
+
+        if (j - low < high - i) {
+            if (low < j) {
+                quick_sort_impl(A, low, j);
+            }
+            low = i;
+        } else {
+            if (i < high){
+                quick_sort_impl(A, i, high);
+            }
+            high = j;
+        }
+    }
 }
 
 void merge_sort(Poscode *A, size_t n){
-
+    if ( A == nullptr || n == 0) return;
+    if (!A || n == 0) return;
+    std::vector<Poscode> V(n);
+    merge_sort_impl(A, V, 0, n - 1);
 }
+
+void merge_sort_impl(Poscode *A, std::vector<Poscode>& V, int l, int r) {
+    if (l >= r) return;
+
+    int m = l + (r - l) / 2;
+    merge_sort_impl(A, V, l, m);
+    merge_sort_impl(A, V, m + 1, r);
+    if(!less_poscode(A[m + 1], A[m])) return;
+    merge(A, V, l, m, r);
+}
+
+void merge(Poscode *A, std::vector<Poscode>& V, int l, int m, int r) {
+    for (int t = l; t <= r; t++) {
+        V[t] = A[t];
+    }
+    int i = l;
+    int j = m + 1;
+    int k = l;
+
+    while (i <= m && j <= r) {
+        if (less_poscode(V[j], V[i])) {
+            A[k] = V[j];
+            j++;
+        } else {
+            A[k] = V[i];
+            i++;
+        }
+        k++;
+    }
+
+    while (i <= m) {
+        A[k] = V[i];
+        i++;
+        k++;
+    }
+    while (j <= r) {
+        A[k] = V[j];
+        j++;
+        k++;
+    }
+}
+
 void radix_sort(Poscode *A, size_t n){
     if (A == nullptr || n == 0) return;
+    if (!A || n == 0) return;
     std::vector<Poscode> V(n);
     for (size_t i = 0; i < n; i++){
         V[i] = A[i];
     }
-    for (size_t pos = 5; pos >= 0; pos--) {
+    for (int pos = 5; pos >= 0; pos--) {
         if (pos > 3) {
             countingSortByPosition(V, pos, 26);
         } else {
