@@ -7,14 +7,29 @@
 #include "queue.hpp"
 #include <iostream>
 
-
-void quick_sort(Poscode *A, size_t n){
-    if (A == nullptr || n == 0) return;
-    if (!A || n == 0) return;
-    quick_sort_impl(A, 0, n - 1);
+static inline bool less_poscode(Poscode& a, Poscode& b){
+    return a.getData() < b.getData();
 }
 
-void quick_sort_impl(Poscode *A, int low, int high) {
+static inline int char_to_bucket(char c, int M){
+    if (M==10) {
+        if (c>='0' && c<='9') return c - '0';
+        return 0;
+    } else if (M == 26) {
+        if (c>='A' && c<='Z') return c - 'A';
+        return 0;
+    }
+    return 0;
+}
+
+static void quick_sort_impl(Poscode *A, int low, int high);
+
+void quick_sort(Poscode *A, size_t n){
+    if (!A || n <= 1) return;
+    quick_sort_impl(A, 0, static_cast<int>(n - 1));
+}
+
+static void quick_sort_impl(Poscode *A, int low, int high) {
     while (low < high) {
         int i = low;
         int j = high;
@@ -46,16 +61,17 @@ void quick_sort_impl(Poscode *A, int low, int high) {
     }
 }
 
+static void merge_sort_impl(Poscode *A, std::vector<Poscode>& V, int l, int r);
+static void merge(Poscode *A, std::vector<Poscode>& V, int l, int m, int r);
+
 void merge_sort(Poscode *A, size_t n){
-    if ( A == nullptr || n == 0) return;
-    if (!A || n == 0) return;
+    if (!A || n <= 1) return;
     std::vector<Poscode> V(n);
-    merge_sort_impl(A, V, 0, n - 1);
+    merge_sort_impl(A, V, 0, static_cast<int>(n - 1));
 }
 
-void merge_sort_impl(Poscode *A, std::vector<Poscode>& V, int l, int r) {
+static void merge_sort_impl(Poscode *A, std::vector<Poscode>& V, int l, int r) {
     if (l >= r) return;
-
     int m = l + (r - l) / 2;
     merge_sort_impl(A, V, l, m);
     merge_sort_impl(A, V, m + 1, r);
@@ -63,7 +79,7 @@ void merge_sort_impl(Poscode *A, std::vector<Poscode>& V, int l, int r) {
     merge(A, V, l, m, r);
 }
 
-void merge(Poscode *A, std::vector<Poscode>& V, int l, int m, int r) {
+static void merge(Poscode *A, std::vector<Poscode>& V, int l, int m, int r) {
     for (int t = l; t <= r; t++) {
         V[t] = A[t];
     }
@@ -95,8 +111,7 @@ void merge(Poscode *A, std::vector<Poscode>& V, int l, int m, int r) {
 }
 
 void radix_sort(Poscode *A, size_t n){
-    if (A == nullptr || n == 0) return;
-    if (!A || n == 0) return;
+    if (!A || n <= 1) return;
     std::vector<Poscode> V(n);
     for (size_t i = 0; i < n; i++){
         V[i] = A[i];
@@ -139,20 +154,7 @@ void deleteCodes(Poscode *codes){
     }    
 }
 
-static inline bool less_poscode(Poscode& a, Poscode& b){
-    return a.getData() < b.getData();
-}
 
-static inline int char_to_bucket(char c, int M){
-    if (M==10) {
-        if (c>='0' && c<='9') return c - '0';
-        return -1;
-    } else if (M == 26) {
-        if (c>='A' && c<='Z') return c - 'A';
-        return -1;
-    }
-    return -1;
-}
 void countingSortByPosition(std::vector<Poscode>& arr, int pos, int M){
     std::vector<eda::Queue> buckets(M);
     for(int i = 0; i < arr.size() ; i++){
@@ -161,7 +163,7 @@ void countingSortByPosition(std::vector<Poscode>& arr, int pos, int M){
         if (bucket >= 0 && bucket < M) {  
             buckets[bucket].push(i);
         }
-    };
+    }
     std::vector<Poscode> buffer;
     buffer.reserve(arr.size());
     for (int j = 0; j < M; j++){
