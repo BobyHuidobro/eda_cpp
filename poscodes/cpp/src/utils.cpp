@@ -177,3 +177,16 @@ void countingSortByPosition(std::vector<Poscode>& arr, int pos, int M){
         arr[i] = buffer[i];
     }
 }
+
+bool is_sorted(Poscode *A, size_t n) {
+    if (n <= 1) {
+        return true;
+    }
+    for (size_t i = 0; i < n-1; i++) {
+        if (less_poscode(A[i+1], A[i])) {  
+            return false;  
+        }
+    }
+
+    return true;
+}

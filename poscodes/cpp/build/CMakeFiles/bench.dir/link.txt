@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/bench.dir/bench.cpp.o CMakeFiles/bench.dir/src/utils.cpp.o CMakeFiles/bench.dir/src/poscode.cpp.o CMakeFiles/bench.dir/src/node.cpp.o CMakeFiles/bench.dir/src/queue.cpp.o -o bench 

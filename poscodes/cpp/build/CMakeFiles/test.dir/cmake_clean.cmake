@@ -1,6 +1,10 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/test.dir/src/node.cpp.o"
+  "CMakeFiles/test.dir/src/node.cpp.o.d"
   "CMakeFiles/test.dir/src/poscode.cpp.o"
   "CMakeFiles/test.dir/src/poscode.cpp.o.d"
+  "CMakeFiles/test.dir/src/queue.cpp.o"
+  "CMakeFiles/test.dir/src/queue.cpp.o.d"
   "CMakeFiles/test.dir/src/utils.cpp.o"
   "CMakeFiles/test.dir/src/utils.cpp.o.d"
   "CMakeFiles/test.dir/test.cpp.o"
